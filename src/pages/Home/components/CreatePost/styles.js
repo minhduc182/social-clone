@@ -192,4 +192,74 @@ export const PostButton = styled.button`
     color: ${({ theme }) => theme.colors.text.disabled};
     cursor: not-allowed;
   }
+`;
+
+export const ImagePreviewContainer = styled.div`
+  position: relative;
+  margin-top: 16px;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  overflow: hidden;
+  max-height: 300px;
+`;
+
+export const ImagePreview = styled.img`
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+`;
+
+export const RemoveImageButton = styled.button`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+`;
+
+export const FileInput = styled.input`
+  display: none;
+`;
+
+export const AddMediaContainer = styled.div`
+  margin-top: 16px;
+  border-top: 1px solid ${({ theme }) => theme.colors.divider};
+  padding-top: 16px;
+`;
+
+export const AddMediaButton = styled.button`
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: ${({ theme }) => theme.colors.text.secondary};
+  padding: 8px;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  cursor: pointer;
+  
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.hover.background};
+  }
+  
+  svg {
+    font-size: 20px;
+    margin-right: 8px;
+    color: #45bd62;
+  }
+`;
+
+export const AddMediaText = styled.span`
+  font-size: 15px;
+  font-weight: 600;
 `; 

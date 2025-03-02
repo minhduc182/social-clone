@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const SidebarContainer = styled.div`
-  width: 360px;
+  width: 280px;
   padding: 16px 8px;
   overflow-y: auto;
   max-height: calc(100vh - 60px);
@@ -17,11 +17,11 @@ export const SidebarContainer = styled.div`
     border-radius: 4px;
   }
   
-  @media (max-width: 1260px) {
-    width: 280px;
+  @media (max-width: 1100px) {
+    width: 70px;
   }
   
-  @media (max-width: 1100px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;
@@ -32,11 +32,15 @@ export const SidebarItem = styled.div`
   padding: 8px;
   border-radius: 8px;
   cursor: pointer;
-  color: ${({ theme }) => theme.colors.text.primary};
   text-decoration: none;
+  color: ${({ theme }) => theme.colors.text.primary};
   
   &:hover {
     background-color: ${({ theme }) => theme.colors.hover.background};
+  }
+  
+  @media (max-width: 1100px) {
+    justify-content: center;
   }
 `;
 
@@ -44,10 +48,10 @@ export const SidebarIcon = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  margin-right: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 12px;
   color: ${({ theme }) => theme.colors.primary};
   
   img {
@@ -58,13 +62,24 @@ export const SidebarIcon = styled.div`
   }
   
   svg {
-    font-size: 20px;
+    font-size: 24px;
+  }
+  
+  @media (max-width: 1100px) {
+    margin-right: 0;
   }
 `;
 
 export const SidebarText = styled.div`
   font-size: 15px;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  @media (max-width: 1100px) {
+    display: none;
+  }
 `;
 
 export const SidebarDivider = styled.div`
@@ -79,4 +94,54 @@ export const SidebarTitle = styled.div`
   color: ${({ theme }) => theme.colors.text.secondary};
   padding: 8px;
   margin-top: 8px;
+  
+  @media (max-width: 1100px) {
+    display: none;
+  }
+`;
+
+export const SeeMoreButton = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.text.primary};
+  
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.hover.background};
+  }
+  
+  @media (max-width: 1100px) {
+    justify-content: center;
+  }
+`;
+
+export const SeeMoreIcon = styled.div`
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.input.background};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  color: ${({ theme }) => theme.colors.text.primary};
+  
+  svg {
+    font-size: 16px;
+  }
+  
+  @media (max-width: 1100px) {
+    margin-right: 0;
+  }
+`;
+
+export const SeeMoreText = styled.div`
+  font-size: 15px;
+  font-weight: 500;
+  
+  @media (max-width: 1100px) {
+    display: none;
+  }
 `; 

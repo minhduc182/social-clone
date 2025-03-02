@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FaUserCircle, FaVideo, FaImage, FaSmile } from 'react-icons/fa';
+import React, { useState, useRef } from 'react';
+import { FaUserCircle, FaVideo, FaImage, FaSmile, FaTimes } from 'react-icons/fa';
 import {
   CreatePostCard,
   PostInputWrapper,
@@ -17,21 +17,50 @@ import {
   ModalBody,
   PostTextarea,
   ModalFooter,
-  PostButton
+  PostButton,
+  ImagePreviewContainer,
+  ImagePreview,
+  RemoveImageButton,
+  FileInput,
+  AddMediaContainer,
+  AddMediaButton,
+  AddMediaText
 } from './styles';
 
 const CreatePost = () => {
   const [showModal, setShowModal] = useState(false);
   const [postContent, setPostContent] = useState('');
+  const [selectedImage, setSelectedImage] = useState(null);
+  const fileInputRef = useRef(null);
 
   const handleCreatePost = () => {
-    if (postContent.trim() === '') return;
+    if (postContent.trim() === '' && !selectedImage) return;
     
     // Xử lý tạo bài đăng ở đây
-    console.log('Tạo bài đăng:', postContent);
+    console.log('Tạo bài đăng:', { text: postContent, image: selectedImage });
     
+    // Reset form
     setPostContent('');
+    setSelectedImage(null);
     setShowModal(false);
+  };
+
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedImage(URL.createObjectURL(file));
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current.click();
   };
 
   return (
@@ -42,7 +71,7 @@ const CreatePost = () => {
             <FaUserCircle />
           </UserAvatar>
           <PostInput onClick={() => setShowModal(true)}>
-            Bạn đang nghĩ gì?
+            Đức ơi, bạn đang nghĩ gì thế?
           </PostInput>
         </PostInputWrapper>
         <PostActions>
@@ -50,13 +79,18 @@ const CreatePost = () => {
             <FaVideo />
             Video trực tiếp
           </VideoButton>
-          <PhotoButton>
+          <PhotoButton onClick={() => {
+            setShowModal(true);
+            setTimeout(() => {
+              triggerFileInput();
+            }, 300);
+          }}>
             <FaImage />
-            Ảnh/Video
+            Ảnh/video
           </PhotoButton>
           <FeelingButton>
             <FaSmile />
-            Cảm xúc
+            Cảm xúc/hoạt động
           </FeelingButton>
         </PostActions>
       </CreatePostCard>
@@ -66,19 +100,45 @@ const CreatePost = () => {
           <ModalContent>
             <ModalHeader>
               <ModalTitle>Tạo bài viết</ModalTitle>
-              <CloseButton onClick={() => setShowModal(false)}>×</CloseButton>
+              <CloseButton onClick={() => {
+                setShowModal(false);
+                setSelectedImage(null);
+              }}>×</CloseButton>
             </ModalHeader>
             <ModalBody>
               <PostTextarea 
-                placeholder="Bạn đang nghĩ gì?"
+                placeholder="Đức ơi, bạn đang nghĩ gì thế?"
                 value={postContent}
                 onChange={(e) => setPostContent(e.target.value)}
                 autoFocus
               />
+              
+              {selectedImage ? (
+                <ImagePreviewContainer>
+                  <ImagePreview src={selectedImage} alt="Preview" />
+                  <RemoveImageButton onClick={handleRemoveImage}>
+                    <FaTimes />
+                  </RemoveImageButton>
+                </ImagePreviewContainer>
+              ) : (
+                <AddMediaContainer>
+                  <AddMediaButton onClick={triggerFileInput}>
+                    <FaImage />
+                    <AddMediaText>Thêm ảnh/video</AddMediaText>
+                  </AddMediaButton>
+                </AddMediaContainer>
+              )}
+              
+              <FileInput 
+                type="file" 
+                ref={fileInputRef}
+                onChange={handleImageChange}
+                accept="image/*"
+              />
             </ModalBody>
             <ModalFooter>
               <PostButton 
-                disabled={postContent.trim() === ''}
+                disabled={postContent.trim() === '' && !selectedImage}
                 onClick={handleCreatePost}
               >
                 Đăng

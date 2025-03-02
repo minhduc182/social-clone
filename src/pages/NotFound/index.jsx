@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaExclamationTriangle, FaHome } from 'react-icons/fa';
+import { FaFacebook, FaHome } from 'react-icons/fa';
 import {
   NotFoundContainer,
-  NotFoundIcon,
+  NotFoundContent,
+  NotFoundLogo,
   NotFoundTitle,
   NotFoundText,
   NotFoundButton
@@ -12,16 +13,19 @@ import {
 const NotFound = () => {
   return (
     <NotFoundContainer>
-      <NotFoundIcon>
-        <FaExclamationTriangle />
-      </NotFoundIcon>
-      <NotFoundTitle>Trang không tìm thấy</NotFoundTitle>
-      <NotFoundText>
-        Trang bạn đang tìm kiếm có thể đã bị xóa, đổi tên hoặc tạm thời không khả dụng.
-      </NotFoundText>
-      <NotFoundButton as={Link} to="/">
-        <FaHome /> Quay về trang chủ
-      </NotFoundButton>
+      <NotFoundContent>
+        <NotFoundLogo>
+          <FaFacebook />
+        </NotFoundLogo>
+        <NotFoundTitle>Trang này không khả dụng</NotFoundTitle>
+        <NotFoundText>
+          Liên kết bạn đã theo dõi có thể bị hỏng hoặc trang có thể đã bị xóa.
+        </NotFoundText>
+        <NotFoundButton as={Link} to="/">
+          <FaHome />
+          Đi đến Trang chủ
+        </NotFoundButton>
+      </NotFoundContent>
     </NotFoundContainer>
   );
 };

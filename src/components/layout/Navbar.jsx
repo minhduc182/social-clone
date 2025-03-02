@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaFacebook, FaSearch, FaHome, FaUserFriends, FaVideo, FaStore, FaGamepad, FaBell, FaCaretDown, FaUserCircle } from 'react-icons/fa';
+import { FaFacebook, FaSearch, FaHome, FaUserFriends, FaVideo, FaStore, FaGamepad, FaBell, FaCaretDown, FaUserCircle, FaComments, FaMoon, FaSun } from 'react-icons/fa';
+import { useTheme } from '../../context/ThemeContext';
 
 const NavbarContainer = styled.nav`
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: ${({ theme }) => theme.colors.navbar.background};
+  box-shadow: ${({ theme }) => theme.colors.navbar.shadow};
   height: 60px;
   display: flex;
   align-items: center;
@@ -29,7 +30,7 @@ const FacebookLogo = styled(Link)`
 `;
 
 const SearchContainer = styled.div`
-  background-color: #f0f2f5;
+  background-color: ${({ theme }) => theme.colors.input.background};
   border-radius: 50px;
   display: flex;
   align-items: center;
@@ -43,7 +44,7 @@ const SearchContainer = styled.div`
 `;
 
 const SearchIcon = styled.div`
-  color: #65676b;
+  color: ${({ theme }) => theme.colors.icon};
   margin-right: 8px;
 `;
 
@@ -53,6 +54,10 @@ const SearchInput = styled.input`
   font-size: 15px;
   outline: none;
   width: 240px;
+  color: ${({ theme }) => theme.colors.text.primary};
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.text.secondary};
+  }
 `;
 
 const NavbarCenter = styled.div`
@@ -72,12 +77,12 @@ const TabButton = styled(Link)`
   height: 60px;
   min-width: 110px;
   border-radius: 8px;
-  color: ${props => props.active ? '#1877f2' : '#65676b'};
-  border-bottom: ${props => props.active ? '3px solid #1877f2' : 'none'};
+  color: ${props => props.active ? props.theme.colors.navbar.activeTab : props.theme.colors.navbar.inactiveTab};
+  border-bottom: ${props => props.active ? `3px solid ${props.theme.colors.navbar.activeTab}` : 'none'};
   text-decoration: none;
   
   &:hover {
-    background-color: #f0f2f5;
+    background-color: ${({ theme }) => theme.colors.hover.background};
   }
   
   svg {
@@ -98,42 +103,70 @@ const IconButton = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #e4e6eb;
+  background-color: ${({ theme }) => theme.colors.input.background};
   display: flex;
   align-items: center;
   justify-content: center;
   margin-left: 8px;
   cursor: pointer;
+  color: ${({ theme }) => theme.colors.text.primary};
   
   &:hover {
-    background-color: #d8dadf;
+    background-color: ${({ theme }) => theme.colors.hover.background};
   }
   
   svg {
     font-size: 20px;
-    color: black;
   }
 `;
 
 const ProfileButton = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  padding: 4px 8px;
-  border-radius: 18px;
+  justify-content: center;
   margin-left: 8px;
   cursor: pointer;
-  
-  &:hover {
-    background-color: #f0f2f5;
-  }
+  overflow: hidden;
   
   svg {
-    font-size: 28px;
-    color: #65676b;
+    font-size: 40px;
+    color: ${({ theme }) => theme.colors.icon};
+  }
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+const NotificationBadge = styled.div`
+  position: relative;
+  
+  &::after {
+    content: '1';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #e41e3f;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
 const Navbar = () => {
+  const { theme, toggleTheme } = useTheme();
+  
   return (
     <NavbarContainer>
       <NavbarLeft>
@@ -170,8 +203,16 @@ const Navbar = () => {
         <ProfileButton>
           <FaUserCircle />
         </ProfileButton>
+        <NotificationBadge>
+          <IconButton>
+            <FaComments />
+          </IconButton>
+        </NotificationBadge>
         <IconButton>
           <FaBell />
+        </IconButton>
+        <IconButton onClick={toggleTheme}>
+          {theme.name === 'dark' ? <FaSun /> : <FaMoon />}
         </IconButton>
         <IconButton>
           <FaCaretDown />

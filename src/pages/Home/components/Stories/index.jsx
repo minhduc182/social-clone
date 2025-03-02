@@ -19,7 +19,7 @@ const storiesData = [
     id: 1,
     user: {
       id: 1,
-      name: 'Nguyễn Văn A',
+      name: 'Nguyễn Thu Hoài',
       avatar: 'https://i.pravatar.cc/150?img=1'
     },
     image: 'https://picsum.photos/id/1/200/300'
@@ -28,7 +28,7 @@ const storiesData = [
     id: 2,
     user: {
       id: 2,
-      name: 'Trần Thị B',
+      name: 'Kim Ngân',
       avatar: 'https://i.pravatar.cc/150?img=2'
     },
     image: 'https://picsum.photos/id/2/200/300'
@@ -37,7 +37,7 @@ const storiesData = [
     id: 3,
     user: {
       id: 3,
-      name: 'Lê Văn C',
+      name: 'Thích chụp ảnh',
       avatar: 'https://i.pravatar.cc/150?img=3'
     },
     image: 'https://picsum.photos/id/3/200/300'
@@ -46,10 +46,19 @@ const storiesData = [
     id: 4,
     user: {
       id: 4,
-      name: 'Phạm Thị D',
+      name: 'Trang Huyền Lê',
       avatar: 'https://i.pravatar.cc/150?img=4'
     },
     image: 'https://picsum.photos/id/4/200/300'
+  },
+  {
+    id: 5,
+    user: {
+      id: 5,
+      name: 'Văn',
+      avatar: 'https://i.pravatar.cc/150?img=5'
+    },
+    image: 'https://picsum.photos/id/5/200/300'
   }
 ];
 

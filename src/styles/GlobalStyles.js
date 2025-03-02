@@ -5,7 +5,7 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: ${({ theme }) => theme.fonts.family};
+    font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
   }
 
   body {
@@ -17,6 +17,7 @@ const GlobalStyles = createGlobalStyle`
     width: 100%;
     min-height: 100vh;
     transition: background-color ${({ theme }) => theme.transitions.normal} ease;
+    font-size: 15px;
   }
 
   a {
@@ -66,6 +67,30 @@ const GlobalStyles = createGlobalStyle`
   ::placeholder {
     color: ${({ theme }) => theme.colors.text.secondary};
     opacity: 1;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Scrollbar styles */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.divider};
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${({ theme }) => theme.colors.text.secondary};
   }
 `;
 

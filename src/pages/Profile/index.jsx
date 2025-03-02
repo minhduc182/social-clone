@@ -1,191 +1,474 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import { FaCamera, FaEdit, FaPlus, FaEllipsisH } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { FaCamera, FaPencilAlt, FaUserFriends, FaMapMarkerAlt, FaBriefcase, FaGraduationCap, FaHeart, FaEllipsisH, FaRegHeart, FaRegComment, FaShare, FaRegBookmark, FaBookmark, FaImages, FaVideo, FaCalendarAlt, FaUserTag } from 'react-icons/fa';
 import {
   ProfileContainer,
-  CoverSection,
+  ProfileHeader,
   CoverPhoto,
+  CoverPhotoOverlay,
   CoverPhotoButton,
-  ProfileInfo,
   ProfileAvatar,
+  ProfileAvatarOverlay,
   ProfileAvatarButton,
+  ProfileInfo,
   ProfileName,
   ProfileBio,
+  ProfileStats,
+  ProfileStat,
+  ProfileStatNumber,
+  ProfileStatLabel,
   ProfileActions,
   ProfileActionButton,
-  ProfileTabs,
-  ProfileTab,
   ProfileContent,
-  AboutSection,
-  AboutItem,
-  AboutIcon,
-  AboutText,
-  FriendsSection,
-  FriendsHeader,
-  FriendsTitle,
-  FriendsLink,
-  FriendsGrid,
-  FriendCard,
-  FriendAvatar,
-  FriendName,
-  PhotosSection,
-  PhotosHeader,
-  PhotosTitle,
-  PhotosLink,
-  PhotosGrid,
-  PhotoCard,
-  PhotoImage
+  ProfileLeftSidebar,
+  ProfileAbout,
+  ProfileAboutTitle,
+  ProfileAboutItem,
+  ProfileAboutIcon,
+  ProfileAboutText,
+  ProfilePhotos,
+  ProfilePhotosTitle,
+  ProfilePhotosGrid,
+  ProfilePhotoItem,
+  ProfileFriends,
+  ProfileFriendsTitle,
+  ProfileFriendsGrid,
+  ProfileFriendItem,
+  ProfileFriendAvatar,
+  ProfileFriendName,
+  ProfileFriendMutual,
+  ProfileMainContent,
+  CreatePostContainer,
+  CreatePostInput,
+  CreatePostActions,
+  CreatePostAction,
+  PostsContainer,
+  PostCard,
+  PostHeader,
+  PostAuthor,
+  PostAvatar,
+  PostInfo,
+  PostName,
+  PostTime,
+  PostVisibility,
+  PostContent,
+  PostText,
+  PostImage,
+  PostStats,
+  PostActions,
+  PostAction,
+  ProfileTabs,
+  ProfileTab
 } from './styles';
 
-// Dữ liệu mẫu cho trang profile
-const profileData = {
-  id: 1,
-  name: 'Tô Minh Đức',
-  coverPhoto: 'https://picsum.photos/id/1018/1000/300',
-  avatar: 'https://i.pravatar.cc/150?img=12',
-  bio: 'Sống vui vẻ và làm những điều mình thích ✨',
-  friends: [
-    { id: 1, name: 'Nguyễn Văn A', avatar: 'https://i.pravatar.cc/150?img=1' },
-    { id: 2, name: 'Trần Thị B', avatar: 'https://i.pravatar.cc/150?img=2' },
-    { id: 3, name: 'Lê Văn C', avatar: 'https://i.pravatar.cc/150?img=3' },
-    { id: 4, name: 'Phạm Thị D', avatar: 'https://i.pravatar.cc/150?img=4' },
-    { id: 5, name: 'Hoàng Văn E', avatar: 'https://i.pravatar.cc/150?img=5' },
-    { id: 6, name: 'Ngô Thị F', avatar: 'https://i.pravatar.cc/150?img=6' }
-  ],
-  photos: [
-    { id: 1, url: 'https://picsum.photos/id/10/300/300' },
-    { id: 2, url: 'https://picsum.photos/id/11/300/300' },
-    { id: 3, url: 'https://picsum.photos/id/12/300/300' },
-    { id: 4, url: 'https://picsum.photos/id/13/300/300' },
-    { id: 5, url: 'https://picsum.photos/id/14/300/300' },
-    { id: 6, url: 'https://picsum.photos/id/15/300/300' },
-    { id: 7, url: 'https://picsum.photos/id/16/300/300' },
-    { id: 8, url: 'https://picsum.photos/id/17/300/300' },
-    { id: 9, url: 'https://picsum.photos/id/18/300/300' }
-  ],
-  about: {
-    work: 'Làm việc tại Công ty ABC',
-    education: 'Học tại Đại học XYZ',
-    location: 'Sống tại Hà Nội',
-    relationship: 'Độc thân'
-  }
-};
-
 const Profile = () => {
-  const { id } = useParams();
-  const isCurrentUser = id === 'me' || id === '1';
+  const [activeTab, setActiveTab] = useState('posts');
+  const [likedPosts, setLikedPosts] = useState({});
+  const [savedPosts, setSavedPosts] = useState({});
+  
+  // Dữ liệu mẫu cho người dùng
+  const user = {
+    id: 1,
+    name: 'Nguyễn Văn A',
+    avatar: 'https://picsum.photos/id/1005/200/200',
+    coverPhoto: 'https://picsum.photos/id/1015/1200/400',
+    bio: 'Nhiếp ảnh gia | Người yêu thích du lịch | Kỹ sư phần mềm',
+    location: 'Hà Nội, Việt Nam',
+    work: 'Kỹ sư phần mềm tại Tech Company',
+    education: 'Đại học Bách Khoa Hà Nội',
+    relationship: 'Độc thân',
+    friends: 1250,
+    followers: 3500,
+    following: 450
+  };
+  
+  // Dữ liệu mẫu cho bài đăng
+  const posts = [
+    {
+      id: 1,
+      author: {
+        name: user.name,
+        avatar: user.avatar
+      },
+      time: '2 giờ trước',
+      visibility: 'public',
+      text: 'Chuyến du lịch cuối tuần tại Đà Lạt. Thời tiết thật tuyệt vời!',
+      image: 'https://picsum.photos/id/1036/800/600',
+      likes: 124,
+      comments: 36,
+      shares: 5
+    },
+    {
+      id: 2,
+      author: {
+        name: user.name,
+        avatar: user.avatar
+      },
+      time: '1 ngày trước',
+      visibility: 'friends',
+      text: 'Vừa hoàn thành dự án mới. Rất vui khi được làm việc với một đội ngũ tuyệt vời!',
+      image: 'https://picsum.photos/id/1066/800/600',
+      likes: 89,
+      comments: 14,
+      shares: 2
+    },
+    {
+      id: 3,
+      author: {
+        name: user.name,
+        avatar: user.avatar
+      },
+      time: '1 tuần trước',
+      visibility: 'public',
+      text: 'Buổi họp mặt lớp cuối năm. Thật vui khi gặp lại mọi người sau nhiều năm!',
+      image: 'https://picsum.photos/id/1059/800/600',
+      likes: 215,
+      comments: 42,
+      shares: 8
+    }
+  ];
+  
+  // Dữ liệu mẫu cho ảnh
+  const photos = [
+    'https://picsum.photos/id/1001/150/150',
+    'https://picsum.photos/id/1002/150/150',
+    'https://picsum.photos/id/1003/150/150',
+    'https://picsum.photos/id/1004/150/150',
+    'https://picsum.photos/id/1005/150/150',
+    'https://picsum.photos/id/1006/150/150',
+    'https://picsum.photos/id/1008/150/150',
+    'https://picsum.photos/id/1009/150/150',
+    'https://picsum.photos/id/1010/150/150'
+  ];
+  
+  // Dữ liệu mẫu cho bạn bè
+  const friends = [
+    {
+      id: 1,
+      name: 'Trần Thị B',
+      avatar: 'https://picsum.photos/id/1011/100/100',
+      mutualFriends: 15
+    },
+    {
+      id: 2,
+      name: 'Lê Văn C',
+      avatar: 'https://picsum.photos/id/1012/100/100',
+      mutualFriends: 8
+    },
+    {
+      id: 3,
+      name: 'Phạm Thị D',
+      avatar: 'https://picsum.photos/id/1013/100/100',
+      mutualFriends: 12
+    },
+    {
+      id: 4,
+      name: 'Hoàng Văn E',
+      avatar: 'https://picsum.photos/id/1014/100/100',
+      mutualFriends: 5
+    },
+    {
+      id: 5,
+      name: 'Vũ Thị F',
+      avatar: 'https://picsum.photos/id/1016/100/100',
+      mutualFriends: 20
+    },
+    {
+      id: 6,
+      name: 'Đặng Văn G',
+      avatar: 'https://picsum.photos/id/1018/100/100',
+      mutualFriends: 3
+    }
+  ];
+  
+  const handleLikePost = (postId) => {
+    setLikedPosts(prev => ({
+      ...prev,
+      [postId]: !prev[postId]
+    }));
+  };
+  
+  const handleSavePost = (postId) => {
+    setSavedPosts(prev => ({
+      ...prev,
+      [postId]: !prev[postId]
+    }));
+  };
+  
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'posts':
+        return (
+          <PostsContainer>
+            <CreatePostContainer>
+              <CreatePostInput placeholder="Bạn đang nghĩ gì?" />
+              <CreatePostActions>
+                <CreatePostAction>
+                  <FaImages /> Ảnh/Video
+                </CreatePostAction>
+                <CreatePostAction>
+                  <FaUserTag /> Gắn thẻ bạn bè
+                </CreatePostAction>
+                <CreatePostAction>
+                  <FaRegBookmark /> Lưu
+                </CreatePostAction>
+              </CreatePostActions>
+            </CreatePostContainer>
+            
+            {posts.map(post => (
+              <PostCard key={post.id}>
+                <PostHeader>
+                  <PostAuthor>
+                    <PostAvatar src={post.author.avatar} alt={post.author.name} />
+                    <PostInfo>
+                      <PostName>{post.author.name}</PostName>
+                      <PostTime>
+                        {post.time} · 
+                        <PostVisibility>
+                          {post.visibility === 'public' ? ' Công khai' : ' Bạn bè'}
+                        </PostVisibility>
+                      </PostTime>
+                    </PostInfo>
+                  </PostAuthor>
+                  <FaEllipsisH />
+                </PostHeader>
+                
+                <PostContent>
+                  <PostText>{post.text}</PostText>
+                  <PostImage src={post.image} alt="" />
+                </PostContent>
+                
+                <PostStats>
+                  <div>
+                    <FaRegHeart /> {likedPosts[post.id] ? post.likes + 1 : post.likes}
+                  </div>
+                  <div>
+                    {post.comments} bình luận · {post.shares} chia sẻ
+                  </div>
+                </PostStats>
+                
+                <PostActions>
+                  <PostAction 
+                    active={likedPosts[post.id]} 
+                    onClick={() => handleLikePost(post.id)}
+                  >
+                    {likedPosts[post.id] ? <FaHeart /> : <FaRegHeart />} Thích
+                  </PostAction>
+                  <PostAction>
+                    <FaRegComment /> Bình luận
+                  </PostAction>
+                  <PostAction>
+                    <FaShare /> Chia sẻ
+                  </PostAction>
+                  <PostAction 
+                    active={savedPosts[post.id]} 
+                    onClick={() => handleSavePost(post.id)}
+                  >
+                    {savedPosts[post.id] ? <FaBookmark /> : <FaRegBookmark />} Lưu
+                  </PostAction>
+                </PostActions>
+              </PostCard>
+            ))}
+          </PostsContainer>
+        );
+      case 'about':
+        return (
+          <ProfileAbout>
+            <ProfileAboutTitle>Giới thiệu</ProfileAboutTitle>
+            <ProfileAboutItem>
+              <ProfileAboutIcon>
+                <FaBriefcase />
+              </ProfileAboutIcon>
+              <ProfileAboutText>Làm việc tại {user.work}</ProfileAboutText>
+            </ProfileAboutItem>
+            <ProfileAboutItem>
+              <ProfileAboutIcon>
+                <FaGraduationCap />
+              </ProfileAboutIcon>
+              <ProfileAboutText>Học tại {user.education}</ProfileAboutText>
+            </ProfileAboutItem>
+            <ProfileAboutItem>
+              <ProfileAboutIcon>
+                <FaMapMarkerAlt />
+              </ProfileAboutIcon>
+              <ProfileAboutText>Sống tại {user.location}</ProfileAboutText>
+            </ProfileAboutItem>
+            <ProfileAboutItem>
+              <ProfileAboutIcon>
+                <FaHeart />
+              </ProfileAboutIcon>
+              <ProfileAboutText>{user.relationship}</ProfileAboutText>
+            </ProfileAboutItem>
+            <ProfileAboutItem>
+              <ProfileAboutIcon>
+                <FaCalendarAlt />
+              </ProfileAboutIcon>
+              <ProfileAboutText>Tham gia vào tháng 3 năm 2015</ProfileAboutText>
+            </ProfileAboutItem>
+          </ProfileAbout>
+        );
+      case 'friends':
+        return (
+          <ProfileFriends>
+            <ProfileFriendsTitle>Bạn bè ({user.friends})</ProfileFriendsTitle>
+            <ProfileFriendsGrid>
+              {friends.map(friend => (
+                <ProfileFriendItem key={friend.id}>
+                  <ProfileFriendAvatar src={friend.avatar} alt={friend.name} />
+                  <ProfileFriendName>{friend.name}</ProfileFriendName>
+                  <ProfileFriendMutual>{friend.mutualFriends} bạn chung</ProfileFriendMutual>
+                </ProfileFriendItem>
+              ))}
+            </ProfileFriendsGrid>
+          </ProfileFriends>
+        );
+      case 'photos':
+        return (
+          <ProfilePhotos>
+            <ProfilePhotosTitle>Ảnh</ProfilePhotosTitle>
+            <ProfilePhotosGrid>
+              {photos.map((photo, index) => (
+                <ProfilePhotoItem key={index} src={photo} alt="" />
+              ))}
+            </ProfilePhotosGrid>
+          </ProfilePhotos>
+        );
+      default:
+        return null;
+    }
+  };
   
   return (
     <ProfileContainer>
-      <CoverSection>
-        <CoverPhoto src={profileData.coverPhoto} alt="Cover" />
-        {isCurrentUser && (
-          <CoverPhotoButton>
-            <FaCamera /> Chỉnh sửa ảnh bìa
-          </CoverPhotoButton>
-        )}
-      </CoverSection>
-      
-      <ProfileInfo>
+      <ProfileHeader>
+        <CoverPhoto src={user.coverPhoto} alt="Cover Photo">
+          <CoverPhotoOverlay>
+            <CoverPhotoButton>
+              <FaCamera /> Chỉnh sửa ảnh bìa
+            </CoverPhotoButton>
+          </CoverPhotoOverlay>
+        </CoverPhoto>
+        
         <ProfileAvatar>
-          <img src={profileData.avatar} alt={profileData.name} />
-          {isCurrentUser && (
+          <img src={user.avatar} alt={user.name} />
+          <ProfileAvatarOverlay>
             <ProfileAvatarButton>
               <FaCamera />
             </ProfileAvatarButton>
-          )}
+          </ProfileAvatarOverlay>
         </ProfileAvatar>
         
-        <ProfileName>{profileData.name}</ProfileName>
-        <ProfileBio>{profileData.bio}</ProfileBio>
-        
-        <ProfileActions>
-          {isCurrentUser ? (
-            <>
-              <ProfileActionButton primary>
-                <FaEdit /> Chỉnh sửa trang cá nhân
-              </ProfileActionButton>
-            </>
-          ) : (
-            <>
-              <ProfileActionButton primary>
-                <FaPlus /> Thêm bạn bè
-              </ProfileActionButton>
-              <ProfileActionButton>
-                Nhắn tin
-              </ProfileActionButton>
-            </>
-          )}
-          <ProfileActionButton>
-            <FaEllipsisH />
-          </ProfileActionButton>
-        </ProfileActions>
-      </ProfileInfo>
+        <ProfileInfo>
+          <ProfileName>{user.name}</ProfileName>
+          <ProfileBio>{user.bio}</ProfileBio>
+          
+          <ProfileStats>
+            <ProfileStat>
+              <ProfileStatNumber>{user.friends}</ProfileStatNumber>
+              <ProfileStatLabel>Bạn bè</ProfileStatLabel>
+            </ProfileStat>
+            <ProfileStat>
+              <ProfileStatNumber>{user.followers}</ProfileStatNumber>
+              <ProfileStatLabel>Người theo dõi</ProfileStatLabel>
+            </ProfileStat>
+            <ProfileStat>
+              <ProfileStatNumber>{user.following}</ProfileStatNumber>
+              <ProfileStatLabel>Đang theo dõi</ProfileStatLabel>
+            </ProfileStat>
+          </ProfileStats>
+          
+          <ProfileActions>
+            <ProfileActionButton primary>
+              <FaPencilAlt /> Chỉnh sửa trang cá nhân
+            </ProfileActionButton>
+            <ProfileActionButton>
+              <FaEllipsisH />
+            </ProfileActionButton>
+          </ProfileActions>
+        </ProfileInfo>
+      </ProfileHeader>
       
       <ProfileTabs>
-        <ProfileTab active>Bài viết</ProfileTab>
-        <ProfileTab>Giới thiệu</ProfileTab>
-        <ProfileTab>Bạn bè</ProfileTab>
-        <ProfileTab>Ảnh</ProfileTab>
-        <ProfileTab>Video</ProfileTab>
-        <ProfileTab>Check in</ProfileTab>
+        <ProfileTab 
+          active={activeTab === 'posts'} 
+          onClick={() => setActiveTab('posts')}
+        >
+          Bài viết
+        </ProfileTab>
+        <ProfileTab 
+          active={activeTab === 'about'} 
+          onClick={() => setActiveTab('about')}
+        >
+          Giới thiệu
+        </ProfileTab>
+        <ProfileTab 
+          active={activeTab === 'friends'} 
+          onClick={() => setActiveTab('friends')}
+        >
+          Bạn bè
+        </ProfileTab>
+        <ProfileTab 
+          active={activeTab === 'photos'} 
+          onClick={() => setActiveTab('photos')}
+        >
+          Ảnh
+        </ProfileTab>
       </ProfileTabs>
       
       <ProfileContent>
-        <AboutSection>
-          <h3>Giới thiệu</h3>
+        <ProfileLeftSidebar>
+          <ProfileAbout>
+            <ProfileAboutTitle>Giới thiệu</ProfileAboutTitle>
+            <ProfileAboutItem>
+              <ProfileAboutIcon>
+                <FaBriefcase />
+              </ProfileAboutIcon>
+              <ProfileAboutText>Làm việc tại {user.work}</ProfileAboutText>
+            </ProfileAboutItem>
+            <ProfileAboutItem>
+              <ProfileAboutIcon>
+                <FaGraduationCap />
+              </ProfileAboutIcon>
+              <ProfileAboutText>Học tại {user.education}</ProfileAboutText>
+            </ProfileAboutItem>
+            <ProfileAboutItem>
+              <ProfileAboutIcon>
+                <FaMapMarkerAlt />
+              </ProfileAboutIcon>
+              <ProfileAboutText>Sống tại {user.location}</ProfileAboutText>
+            </ProfileAboutItem>
+            <ProfileAboutItem>
+              <ProfileAboutIcon>
+                <FaHeart />
+              </ProfileAboutIcon>
+              <ProfileAboutText>{user.relationship}</ProfileAboutText>
+            </ProfileAboutItem>
+          </ProfileAbout>
           
-          <AboutItem>
-            <AboutIcon>🏢</AboutIcon>
-            <AboutText>{profileData.about.work}</AboutText>
-          </AboutItem>
+          <ProfilePhotos>
+            <ProfilePhotosTitle>Ảnh</ProfilePhotosTitle>
+            <ProfilePhotosGrid>
+              {photos.slice(0, 9).map((photo, index) => (
+                <ProfilePhotoItem key={index} src={photo} alt="" />
+              ))}
+            </ProfilePhotosGrid>
+          </ProfilePhotos>
           
-          <AboutItem>
-            <AboutIcon>🎓</AboutIcon>
-            <AboutText>{profileData.about.education}</AboutText>
-          </AboutItem>
-          
-          <AboutItem>
-            <AboutIcon>📍</AboutIcon>
-            <AboutText>{profileData.about.location}</AboutText>
-          </AboutItem>
-          
-          <AboutItem>
-            <AboutIcon>❤️</AboutIcon>
-            <AboutText>{profileData.about.relationship}</AboutText>
-          </AboutItem>
-        </AboutSection>
+          <ProfileFriends>
+            <ProfileFriendsTitle>Bạn bè</ProfileFriendsTitle>
+            <ProfileFriendsGrid>
+              {friends.slice(0, 6).map(friend => (
+                <ProfileFriendItem key={friend.id}>
+                  <ProfileFriendAvatar src={friend.avatar} alt={friend.name} />
+                  <ProfileFriendName>{friend.name}</ProfileFriendName>
+                </ProfileFriendItem>
+              ))}
+            </ProfileFriendsGrid>
+          </ProfileFriends>
+        </ProfileLeftSidebar>
         
-        <FriendsSection>
-          <FriendsHeader>
-            <FriendsTitle>Bạn bè</FriendsTitle>
-            <FriendsLink to={`/profile/${id}/friends`}>Xem tất cả bạn bè</FriendsLink>
-          </FriendsHeader>
-          
-          <FriendsGrid>
-            {profileData.friends.map(friend => (
-              <FriendCard key={friend.id} to={`/profile/${friend.id}`}>
-                <FriendAvatar src={friend.avatar} alt={friend.name} />
-                <FriendName>{friend.name}</FriendName>
-              </FriendCard>
-            ))}
-          </FriendsGrid>
-        </FriendsSection>
-        
-        <PhotosSection>
-          <PhotosHeader>
-            <PhotosTitle>Ảnh</PhotosTitle>
-            <PhotosLink to={`/profile/${id}/photos`}>Xem tất cả ảnh</PhotosLink>
-          </PhotosHeader>
-          
-          <PhotosGrid>
-            {profileData.photos.slice(0, 9).map(photo => (
-              <PhotoCard key={photo.id}>
-                <PhotoImage src={photo.url} alt={`Photo ${photo.id}`} />
-              </PhotoCard>
-            ))}
-          </PhotosGrid>
-        </PhotosSection>
+        <ProfileMainContent>
+          {renderTabContent()}
+        </ProfileMainContent>
       </ProfileContent>
     </ProfileContainer>
   );

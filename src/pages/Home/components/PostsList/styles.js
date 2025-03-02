@@ -16,33 +16,21 @@ export const PostCard = styled.div`
 
 export const PostHeader = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
-`;
-
-export const PostAuthor = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 export const PostAvatar = styled.div`
   width: 40px;
   height: 40px;
-  margin-right: 8px;
   border-radius: 50%;
   overflow: hidden;
+  margin-right: 8px;
   
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-  
-  svg {
-    width: 100%;
-    height: 100%;
-    color: ${({ theme }) => theme.colors.icon};
   }
 `;
 
@@ -51,29 +39,15 @@ export const PostInfo = styled.div`
   flex-direction: column;
 `;
 
-export const PostName = styled.div`
+export const PostAuthor = styled.div`
   font-weight: 600;
+  font-size: 15px;
   color: ${({ theme }) => theme.colors.text.primary};
 `;
 
 export const PostTime = styled.div`
-  font-size: 12px;
+  font-size: 13px;
   color: ${({ theme }) => theme.colors.text.secondary};
-`;
-
-export const PostOptions = styled.div`
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.icon};
-  
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.hover.background};
-  }
 `;
 
 export const PostContent = styled.div`
@@ -81,10 +55,9 @@ export const PostContent = styled.div`
 `;
 
 export const PostText = styled.div`
-  color: ${({ theme }) => theme.colors.text.primary};
-  margin-bottom: 12px;
   font-size: 15px;
-  line-height: 1.3333;
+  margin-bottom: 12px;
+  color: ${({ theme }) => theme.colors.text.primary};
 `;
 
 export const PostImage = styled.img`
@@ -94,70 +67,188 @@ export const PostImage = styled.img`
   border-radius: ${({ theme }) => theme.borderRadius.md};
 `;
 
-export const PostActionCount = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.divider};
-  color: ${({ theme }) => theme.colors.text.secondary};
-  font-size: 14px;
-`;
-
-export const PostActions = styled.div`
+export const PostStats = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
   border-bottom: 1px solid ${({ theme }) => theme.colors.divider};
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.text.secondary};
+`;
+
+export const LikeCount = styled.div``;
+
+export const CommentCount = styled.div``;
+
+export const PostActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.divider};
+  margin-bottom: 8px;
+  position: relative;
 `;
 
 export const PostAction = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 1;
-  padding: 8px 0;
+  background: none;
+  border: none;
   border-radius: 4px;
-  color: ${({ theme }) => theme.colors.text.secondary};
+  padding: 8px;
+  flex: 1;
+  cursor: pointer;
+  font-size: 14px;
   font-weight: 600;
-  font-size: 15px;
+  color: ${({ active, color, theme }) => 
+    active ? color || theme.colors.primary : theme.colors.text.secondary};
   
   &:hover {
     background-color: ${({ theme }) => theme.colors.hover.background};
   }
   
   svg {
-    margin-right: 6px;
+    margin-right: 4px;
+    font-size: 18px;
+  }
+  
+  span {
+    margin-right: 4px;
+    font-size: 18px;
   }
 `;
 
-export const PostComments = styled.div`
-  padding-top: 8px;
+export const ReactionsContainer = styled.div`
+  position: absolute;
+  top: -50px;
+  left: 0;
+  display: flex;
+  background-color: ${({ theme }) => theme.colors.card.background};
+  border-radius: 20px;
+  padding: 5px 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 10;
 `;
 
-export const CommentForm = styled.div`
+export const ReactionButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 22px;
+  padding: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s;
+  
+  &:hover {
+    transform: scale(1.3);
+    
+    span {
+      animation: bounce 0.5s;
+    }
+    
+    div {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+`;
+
+export const ReactionTooltip = styled.div`
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.2s;
+`;
+
+export const CommentsContainer = styled.div`
+  margin-bottom: 8px;
+`;
+
+export const CommentItem = styled.div`
   display: flex;
-  align-items: center;
+  margin-bottom: 8px;
 `;
 
 export const CommentAvatar = styled.div`
   width: 32px;
   height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
   margin-right: 8px;
-  color: ${({ theme }) => theme.colors.icon};
   
-  svg {
+  img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+  }
+`;
+
+export const CommentContent = styled.div`
+  background-color: ${({ theme }) => theme.colors.input.background};
+  border-radius: 18px;
+  padding: 8px 12px;
+  max-width: calc(100% - 40px);
+`;
+
+export const CommentAuthor = styled.div`
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 2px;
+  color: ${({ theme }) => theme.colors.text.primary};
+`;
+
+export const CommentText = styled.div`
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.text.primary};
+`;
+
+export const CommentInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const CommentInputAvatar = styled.div`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 8px;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `;
 
 export const CommentInput = styled.input`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.input.background};
+  border: none;
   border-radius: 20px;
   padding: 8px 12px;
+  font-size: 14px;
   color: ${({ theme }) => theme.colors.text.primary};
-  font-size: 15px;
+  
+  &:focus {
+    outline: none;
+  }
   
   &::placeholder {
     color: ${({ theme }) => theme.colors.text.secondary};
