@@ -21,6 +21,7 @@ import {
   Events
 } from '../pages';
 
+import Notifications from '../pages/Notifications';
 // Auth guard
 const PrivateRoute = ({ children }) => {
   // Kiểm tra xem người dùng đã đăng nhập chưa
@@ -49,6 +50,7 @@ const Router = () => {
           <Route path="memories" element={<Memories />} />
           <Route path="saved" element={<Saved />} />
           <Route path="events" element={<Events />} />
+          <Route path="notifications" element={<Notifications />} />
         </Route>
         
         {/* Các trang không yêu cầu đăng nhập */}
